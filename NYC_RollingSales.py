@@ -44,9 +44,6 @@ print(alldf.shape)
 
 bclass=['C6','C8','D0','D4','R4','R5']
 df=alldf[alldf.BCLASS.isin(bclass)]
-print(df.shape)
-df.head(5)
-
 
 # I have created functions to make the apartment numbers consistent (a review of the rolling sales data shows that condominium addresses have a seperate apartment field while cooperatives include the apartment in the ADDRESS field).
 
@@ -84,19 +81,7 @@ df['APT']=df.apply(stripapt, axis=1)
 # 
 # First will clean the lot information and create a seperate column 'condolot' to save the condo lot numbers. 
 
-# In[141]:
 
-# cleans lot
-'''def fixlot(ldf):  
-    try:
-        x=ldf['LOT2'] 
-        x=str(x)
-        x=x.strip('()[]=-,')
-        x=int(x)
-    except:
-        x=ldf['LOT']
-    return(x)         
-'''
 def savecondolot(ldf):
     condoclass=['R4','R5']
     if ldf['BCLASS'] in condoclass:
@@ -104,8 +89,6 @@ def savecondolot(ldf):
     else:
         condolot = 0
     return(condolot)
-
-#df['LOT']=df.apply(fixlot, axis=1)
 
 # creates a new column in which the condo lot number is saved
 df['CONDOLOT']=df.apply(savecondolot, axis=1)
@@ -115,8 +98,6 @@ condoclass=['R4','R5']
 df_condo=df[df.BCLASS.isin(condoclass)]
 print(df_condo.shape)
  
-
-
 # I have saved the condo lot dataframe as 'condo_blconverter.csv' and created a function which creates a column with the appropriate billing lot number from the dataframe.  Before I apply this to the dataframe I have created a condo only dataframe and after running the function I have added them back together.
 
 # In[142]:
@@ -150,7 +131,6 @@ df_condo['LOT'].value_counts()
 
 df_else=df[~df.BCLASS.isin(condoclass)]
 df = df_condo.append(df_else)
-df.shape
 
 
 # In[145]:
@@ -163,41 +143,12 @@ df.dtypes
 df = df.drop(['APT2'], axis=1)
 
 
-# In[147]:
 
-a=['BLOCK','LOT','APT','BUILDING CLASS CATEGORY','CONDOLOT']
-df[a][1:100]
-
-
-# In[148]:
-
-print(df.shape)
-df.dtypes
-
-
-# In[149]:
-
-df['LOT'].value_counts()
-
-
-# In[150]:
 
 df['LOT'] = pd.to_numeric(df['LOT'], errors='coerce')
 
 
-# In[151]:
-
-df.dtypes
-
-
-# In[152]:
-
 df.LOT = df.LOT.astype(int)
-
-
-# In[153]:
-
-df['LOT']
 
 
 # In[154]:
@@ -213,14 +164,6 @@ df.to_csv('processed/RollingJulyProcessed.csv')
 df=pd.read_csv('processed/RollingJulyProcessed.csv',na_values=[' ',''])
 
 
-# In[331]:
-
-print(df.shape)
-print (df.dtypes)
-df.head(5)
-
-
-# Now to calculate sales by building and sales by unit using groupby.  Once I create a groupby function I then execute a series of calculations on it. Since we are concerned with the number of occurences of each Block / Lot combination we could of used and column to calculate the length of.  I choose ['Sale Price'] because it could be interesting for future analysis.
 
 # In[332]:
 
@@ -255,17 +198,6 @@ plutodata=getpluto()
 
 
 # As shown below the plutodata uses block and lot to idnetify the buildings (similar to the df that we have been working on).  So I will use this to merge the data.  
-
-# In[334]:
-
-print(plutodata.shape)
-print (plutodata.dtypes)
-plutodata.head(5)
-
-
-# Now that we have created the groupby we can add the information from the Pluto database.
-
-# In[335]:
 
 def fixapt(ldf):  
     if len(ldf['APT'].strip())<1:
@@ -302,20 +234,7 @@ salescoop = salesbybuilding[salesbybuilding['CONDOLOT'] <1]
 mostsalescoop = salescoop.sort_values('NUMSALES',ascending=False).head(20)
 
 
-# In[336]:
 
-salesbybuilding['UNITSRES'].isnull().value_counts()
-
-
-# In[337]:
-
-salescoop.dtypes
-
-
-# In[338]:
-
-totalsales = salesbybuilding['NUMSALES'].sum()
-print(totalsales)
 
 
 # Now to calculate as a percentage.
@@ -332,17 +251,6 @@ def getpercent(ldf):
 # Calculate the percentage sold and add column with info
 salesbybuilding['PERSALES']=salesbybuilding.apply(getpercent, axis=1)
 
-salesbybuilding[200:210]
-
-
-# In[340]:
-
-salesbybuilding.shape
-
-
-# Going to use Bokeh library to visualize the data.
-
-# In[341]:
 
 from bokeh.plotting import figure, output_file, show, output_notebook
 from bokeh.charts import Bar, hplot, Scatter
@@ -354,7 +262,7 @@ from bokeh.charts.attributes import CatAttr
 
 # In[342]:
 
-output_notebook()
+#output_notebook()
 
 hover = HoverTool(
         tooltips=[("Building","@numsales")])
