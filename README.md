@@ -3,6 +3,8 @@ Analyze Manhattan Rolling Condominium and Cooperative Sales
 
 Using Pandas and Bokeh to Analyze and Visualze NYC Cooperative and Condominium Apartment Sales 
 
+![alt text](screenshots/most_sales_barcharts.png "Bar Charts Most Sales")
+
 My goal is to review the rolling NYC sales data to see what patterns emerge in the area of cooperative and condominium apartment sales.  My initial question is which cooperative and condominium apartment buildings have the most sales by number and percentage.  I hope that this will identify some interesting patterns that can be further explored.
  
 The overall plan is below:
