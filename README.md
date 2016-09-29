@@ -1,7 +1,8 @@
-# RollingSales
-Analyze Manhattan Rolling Condominium and Cooperative Sales
+# Analyze Manhattan Rolling Condominium and Cooperative Sales Data
 
 Using Pandas and Bokeh to Analyze and Visualze NYC Cooperative and Condominium Apartment Sales 
+
+See [my blog post](http://www.boardpackage.com/most-active-buildings/) for additional context on this project.  
 
 ![alt text](screenshots/most_sales_barcharts.png "Bar Charts Most Sales")
 
